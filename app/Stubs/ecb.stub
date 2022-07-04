@@ -1,24 +1,13 @@
 name: {{ name }}
-
-type: {{ type }} # If this is set to Laravel, artisan will be changed to "php artisan"
-
-env: .env # If this is set to .env, the .env file will be used, then you can use env variables
-
+type: {{ type }}
+env: ".env"
 steps:
   - name: run artisan down
     command: php artisan down
-    when:
-      - $(env.APP_ENV) == 'production'
   - name: run composer install
     command: composer install
   - name: run
   - name: run artisan migrate
-      command: php artisan migrate
-      when:
-        - $(env.APP_ENV) == 'production'
-        - $(env.APP_ENV) == 'staging'
-        - $(env.APP_ENV) == 'development'
+    command: php artisan migrate
   - name: run artisan up
     command: php artisan up
-    when:
-      - $(env.APP_ENV) == 'production'

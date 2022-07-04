@@ -1,6 +1,6 @@
 {
-    "name": "{{ name }}",
-    "type": "{{ type }}",
+    "name": "ecb",
+    "type": "laravel",
     "env": ".env",
     "steps": [
         {

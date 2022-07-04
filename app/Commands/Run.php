@@ -4,6 +4,7 @@ namespace App\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
+use Symfony\Component\Yaml\Yaml;
 
 class Run extends Command
 {
@@ -14,8 +15,8 @@ class Run extends Command
      */
     protected $signature = '
         run
-        {{ --path : If the path is different than the current directory. }}
-        {{ --name: The name of the ecb file }}
+        {{ --path= : If the path is different than the current directory. }}
+        {{ --name= : The name of the ecb file }}
     ';
 
     /**
@@ -63,8 +64,8 @@ class Run extends Command
             $isJson = true;
         }
 
-        // Check if the content is yaml
-        $yaml = yaml_parse($content);
+        // Check if the content is yaml and if it then parse it into an array
+        $yaml = Yaml::parseFile($path.'/'.$name);
 
         if($yaml == null) {
             $isYaml = null;
@@ -106,17 +107,77 @@ class Run extends Command
             foreach($steps as $step) {
                 $this->info('Running step: '.$step['name']);
                 $this->info('Command: '.$step['command']);
-                $this->info('Output: '.$step['output']);
-                $this->info('Exit code: '.$step['exit_code']);
+
+                // Run the command
+                $command = exec($step['command'] , $output, $return);
+
+                $this->info('Output:');
+                foreach($output as $line) {
+                    $this->info($line);
+                }
+
+                // If the command failed
+                if($return != 0) {
+                    $this->error('Step failed.');
+                    $this->error('Exiting...');
+                    return;
+                }
+
                 $this->info('----------------------------------------------------');
             }
 
         }
 
         if($isYaml) {
+            // Check if the yaml has the correct keys
+            if(!isset($yaml['name']) || !isset($yaml['type'])) {
+                $this->error('ECB file is not valid.');
+                $this->error('Exiting...');
+                return;
+            }
+
+            // Check if the type is valid
+            if(!in_array($yaml['type'], ['laravel', 'none'])) {
+                $this->error('ECB file is not valid.');
+                $this->error('Exiting...');
+                return;
+            }
+
+            // Run the ecb runner
+            $this->info('Running ECB...');
+            $this->info('Path: '.$path);
+            $this->info('Name: '.$yaml['name']);
+
+            // Get the steps
+            $steps = $yaml['steps'];
+
+            // Run the steps
+            foreach($steps as $step) {
+                $this->info('Running step: '.$step['name']);
+                $this->info('Command: '.$step['command']);
+
+                // Run the command
+                $command = exec($step['command'] , $output, $return);
+
+                $this->info('Output:');
+                foreach($output as $line) {
+                    $this->info($line);
+                }
+
+                // If the command failed
+                if($return != 0) {
+                    $this->error('Step failed.');
+                    $this->error('Exiting...');
+                    return;
+                }
+
+                $this->info('----------------------------------------------------');
+            }
 
         }
 
+
+        $this->info('ECB finished.');
 
     }
 
