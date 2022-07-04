@@ -55,7 +55,7 @@ class Run extends Command
         $json = json_decode($content, true);
 
         if($json == null) {
-            $isJson == null;
+            $isJson = null;
             // Get the json error
             $error = json_last_error();
         }
@@ -67,7 +67,7 @@ class Run extends Command
         $yaml = yaml_parse($content);
 
         if($yaml == null) {
-            $isYaml == null;
+            $isYaml = null;
         }
         else {
             $isYaml = true;
