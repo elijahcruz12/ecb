@@ -1,0 +1,35 @@
+{
+   "name": "ecb-data",
+   "type": "none",
+   "env": ".env",
+   "steps": [
+      {
+         "name": "run artisan down",
+         "command": "php artisan down",
+         "when": [
+            "{env.APP_ENV}" == ["production", "staging"]
+         ]
+      },
+      {
+         "name": "run composer install",
+         "command": "composer install"
+      },
+      {
+         "name": "run"
+      },
+      {
+         "name": "run artisan migrate",
+         "command": "php artisan migrate",
+            "when": [
+                "{env.APP_ENV}" == ["production", "staging", "local"]
+            ]
+      },
+      {
+         "name": "run artisan up",
+         "command": "php artisan up",
+         "when": [
+            "{env.APP_ENV}": ["production", "staging"]
+         ]
+      }
+   ]
+}
