@@ -2,39 +2,49 @@
 
 ------
 
-<p align="center">
-    <img title="Laravel Zero" height="100" src="https://raw.githubusercontent.com/laravel-zero/docs/master/images/logo/laravel-zero-readme.png" />
-</p>
+# ECB
 
-<p align="center">
-  <a href="https://github.com/laravel-zero/framework/actions"><img src="https://img.shields.io/github/workflow/status/laravel-zero/framework/Tests.svg" alt="Build Status"></img></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/dt/laravel-zero/framework.svg" alt="Total Downloads"></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/v/laravel-zero/framework.svg?label=stable" alt="Latest Stable Version"></a>
-  <a href="https://packagist.org/packages/laravel-zero/framework"><img src="https://img.shields.io/packagist/l/laravel-zero/framework.svg" alt="License"></a>
-</p>
+ECB is is a deploy script runner, made for you.
 
-<h4> <center>This is a <bold>community project</bold> and not an official Laravel one </center></h4>
+## Requirements 
 
-Laravel Zero was created by [Nuno Maduro](https://github.com/nunomaduro) and [Owen Voke](https://github.com/owenvoke), and is a micro-framework that provides an elegant starting point for your console application. It is an **unofficial** and customized version of Laravel optimized for building command-line applications.
+- php 8.0+
+- composer
 
-- Built on top of the [Laravel](https://laravel.com) components.
-- Optional installation of Laravel [Eloquent](https://laravel-zero.com/docs/database/), Laravel [Logging](https://laravel-zero.com/docs/logging/) and many others.
-- Supports interactive [menus](https://laravel-zero.com/docs/build-interactive-menus/) and [desktop notifications](https://laravel-zero.com/docs/send-desktop-notifications/) on Linux, Windows & MacOS.
-- Ships with a [Scheduler](https://laravel-zero.com/docs/task-scheduling/) and  a [Standalone Compiler](https://laravel-zero.com/docs/build-a-standalone-application/).
-- Integration with [Collision](https://github.com/nunomaduro/collision) - Beautiful error reporting
+## Installation
 
-------
+Installing is just a simple global require.
 
-## Documentation
+```
+    composer global require elijahcruz/ecb
+```
 
-For full documentation, visit [laravel-zero.com](https://laravel-zero.com/).
+## Usage
 
-## Support the development
-**Do you like this project? Support it by donating**
+First you need to create a deploy script.
 
-- PayPal: [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=66BYDWAT92N6L)
-- Patreon: [Donate](https://www.patreon.com/nunomaduro)
+You can use ecb.json or ecb.init as your deploy script, you can create this using the following command:
 
-## License
+ ```
+    ecb init
+ ```
 
-Laravel Zero is an open-source software licensed under the MIT license.
+or for JSON:
+
+    ```
+        ecb init --json
+    ```
+
+You can also Change the type and name of the project if it's different from the default:
+
+    ```
+        ecb init --type=laravel --name=MyAwesomeProject
+    ```
+
+Then you can add your commands to the ecb file. Once you have all the steps you need, just run it:
+
+```
+    ecb run
+```
+
+And that's it!
